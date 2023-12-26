@@ -19,7 +19,7 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         steps:
-          - task: DownloadPipelineArtifact@0
+          - task: DownloadPipelineArtifact@2
             name: Download_Artifacts
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
