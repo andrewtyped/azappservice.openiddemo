@@ -22,4 +22,3 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifact: ${{ parameters.ArtifactName }}
-          - task: AzApp
