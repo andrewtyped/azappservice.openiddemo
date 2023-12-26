@@ -8,6 +8,8 @@ parameters:
     type: boolean
   - name: ArtifactName
     type: string
+  - name: ZipFileName
+    type: string
 
 stages:
   - stage: Deploy_${{replace(parameters.webappname,'-','_')}}
@@ -28,6 +30,6 @@ stages:
               azureSubscription: 'azappsvc-deployer'
               appType: 'webAppLinux'
               appName: ${{parameters.webappname}}
-              package: $(Build.ArtifactStagingDirectory)/${{parameters.ArtifactName}}.zip
+              package: $(Build.ArtifactStagingDirectory)/${{parameters.ArtifactName}}/${{parameters.zipFileName}}.zip
               runtimeStack: 'DOTNETCORE|8.0'
               deploymentMethod: auto

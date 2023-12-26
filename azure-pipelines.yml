@@ -69,9 +69,11 @@ stages:
       webappname: ${{variables.webappname1}}
       deployCondition: ${{ parameters.deployApp1}}
       artifactName: AzWebApps
+      zipFileName: 'azappservice.openiddemo.1'
   - template: /azure-pipelines.azappsvcdeploy.yml
     parameters:
       group: $(group)
       webappname: ${{variables.webappname2}}
       deployCondition: ${{ parameters.deployApp2}}
       artifactName: AzWebApps
+      zipFileName: 'azappservice.openiddemo.2'
