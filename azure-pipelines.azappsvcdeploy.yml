@@ -10,7 +10,7 @@ parameters:
     type: string
 
 stages:
-  - stage: Deploy_${{parameters.webappname}}
+  - stage: Deploy_${{replace(parameters.webappname,'-','_')}}
     condition: and(succeeded(), eq('true','${{parameters.deployCondition}}'))
     jobs:
       - job: Deploy
@@ -22,3 +22,4 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifact: ${{ parameters.ArtifactName }}
+          - task: AzApp
