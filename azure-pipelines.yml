@@ -64,12 +64,12 @@ stages:
   - template: /azure-pipelines.azappsvcdeploy.yml
     parameters:
       group: $(group)
-      webappname: $(webappname1)
+      webappname: ${{variables.webappname1}}
       deployCondition: ${{ parameters.deployApp1}}
       artifactName: AzWebApps
   - template: /azure-pipelines.azappsvcdeploy.yml
     parameters:
       group: $(group)
-      webappname: $(webappname2)
+      webappname: ${{variables.webappname1}}
       deployCondition: ${{ parameters.deployApp2}}
       artifactName: AzWebApps
