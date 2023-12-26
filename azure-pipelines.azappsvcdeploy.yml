@@ -1,0 +1,24 @@
+parameters:
+  - name: group
+    type: string
+    default: 'rg-azappsvc-1'
+  - name: webappname
+    type: string
+  - name: deployCondition
+    type: boolean
+  - name: ArtifactName
+    type: string
+
+stages:
+  - stage: Deploy_${{parameters.webappname}}
+    condition: and(succeeded(), eq('true','${{parameters.deployCondition}}'))
+    jobs:
+      - job: Deploy
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: DownloadPipelineArtifact@0
+            name: Download_Artifacts
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifact: ${{ parameters.ArtifactName }}
