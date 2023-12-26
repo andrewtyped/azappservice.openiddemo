@@ -30,6 +30,6 @@ stages:
               azureSubscription: 'azappsvc-deployer'
               appType: 'webAppLinux'
               appName: ${{parameters.webappname}}
-              package: $(Build.ArtifactStagingDirectory)/${{parameters.ArtifactName}}/${{parameters.zipFileName}}.zip
+              package: $(Build.ArtifactStagingDirectory)/${{parameters.zipFileName}}.zip
               runtimeStack: 'DOTNETCORE|8.0'
               deploymentMethod: auto
