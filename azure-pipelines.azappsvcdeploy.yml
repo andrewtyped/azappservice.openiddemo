@@ -22,3 +22,12 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifact: ${{ parameters.ArtifactName }}
+          - task: AzureWebApp@1
+            name : Deploy
+            inputs:
+              azureSubscription: 'azappsvc-deployer'
+              appType: 'webAppLinux'
+              appName: ${{parameters.webappname}}
+              package: $(Build.ArtifactStagingDirectory)/${{parameters.ArtifactName}}.zip
+              runtimeStack: 'DOTNETCORE|8.0'
+              deploymentMethod: auto
