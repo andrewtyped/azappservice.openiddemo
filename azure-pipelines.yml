@@ -1,0 +1,56 @@
+parameters:
+  - name: deploy-app1
+    type: boolean
+    default: true
+  - name: deploy-app2
+    type: boolean
+    default: true
+
+variables:
+  - name: slnPath
+    value: $(Build.SourcesDirectory)/azappservice.openiddemo.sln
+  - name: project1Path
+    value: $(Build.SourcesDirectory)/src/azappservice.openiddemo.1/azappservice.openiddemo.1.csproj
+  - name: project2Path
+    value: $(Build.SourcesDirectory)/src/azappservice.openiddemo.2/azappservice.openiddemo.2.csproj
+  - ${{ if eq(variables['System.Debug'],'true')}}:
+    - name: dotNetVerbosity
+      value: detailed
+  - ${{ else }}:
+    - name: dotNetVerbosity
+      value: normal
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: DotNetCoreCLI@2
+            name: Restore
+            inputs:
+              command: restore
+              projects: $(slnPath)
+          - task: DotNetCoreCLI@2
+            name: Build
+            inputs:
+              command: build
+              projects: $(slnPath)
+              arguments: --no-restore --no-logo --verbosity $(dotNetVerbosity)
+          - task: DotNetCoreCLI@2
+            name: Publish
+            inputs:
+              command: publish
+              #projects: Ignored due to publishWebProjects
+              publishWebProjects: true
+              modifyOutputPath: true # Add project folder name to output path
+              zipAfterPublish: true
+              arguments: --no-build --no-logo --verbosity $(dotNetVerbosity) --output $(Build.ArtifactStagingDirectory)
+          - task: PublishPipelineArtifact@1
+            name: Artifact_Upload
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              publishLocation: 'pipeline'
+              artifact: 'AzWebApps'
+              properties: '{"user-mytag":"some-value"}'
